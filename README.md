@@ -1,123 +1,82 @@
-## 리눅스 기초 명령어 - 네트워크 관련 명령어 -
+# Linux
+### 기초 명령어 -파일 시스템 관련-
+### 
 
-### wget (World wilde web + Get)
-> 웹서버로부터 컨텐츠를 가져오는 도구   
-> wget + 자료의url 
 
+## pwd (Print Working Directory)
+> 현재 위치한 디렉토리의 절대경로를 출력
 ```bash
-$ wget https://openresty.org/download/openresty-1.17.8.2.tar.gz
---2022-07-19 13:49:18--  https://openresty.org/download/openresty-1.17.8.2.tar.gz
-Resolving openresty.org (openresty.org)... 18.138.237.72
-Connecting to openresty.org (openresty.org)|18.138.237.72|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 5041142 (4.8M) [application/x-gzip]
-Saving to: ‘openresty-1.17.8.2.tar.gz’
-
-100%[=============================================================================================================================================================================================>] 5,041,142   5.14MB/s   in 0.9s
-
-2022-07-19 13:49:20 (5.14 MB/s) - ‘openresty-1.17.8.2.tar.gz’ saved [5041142/5041142]
-
-$ ls -al openresty-1.17.8.2.tar.gz
--rw-rw-r-- 1 ec2-user ec2-user 5041142 Jul 13  2020 openresty-1.17.8.2.tar.gz
+$ pwd
+/c/Workspace
 ```
 
-### curl (Client for URLs)
->다양한 프로토콜을 사용하여 데이터를 전송하게 해주는 도구
-> curl -lkso   
-> l : 링크를 따라서 리다이렉트 된 곳으로 넘어감  
-> k : https의 인증을 무시  
-> s : slient 모드로 실행 = 통계값을 출력하지 않음  
-> o : output 파일을 지정   
-> w : output 포멧을 결정
-
-> null : 아무것도 없는 상태의 파일, 어떤 출력값을 null로 보내면 값이 사라짐
-
-### route : 네트워크의 경로 정보(라우팅 테이블)의 출력, 변경하는 도구
+## cd (Change Directory)
+> 경로 이동 절대 경로와 상대경로로 이동 가능  
+ 현재 작업 디렉토리를 지정한 디렉토리로 변경  
 
 ```bash
-$ route
-Kernel IP routing table
-Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
-default         ip-172-31-0-1.a 0.0.0.0         UG    0      0        0 eth0
-instance-data.a 0.0.0.0         255.255.255.255 UH    0      0        0 eth0
-172.31.0.0      0.0.0.0         255.255.240.0   U     0      0        0 eth0
+$ cd Linux
+$ pwd
+/c/Workspace/Linux
 
-$ route -n
-Kernel IP routing table
-Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
-0.0.0.0         172.31.0.1      0.0.0.0         UG    0      0        0 eth0
-169.254.169.254 0.0.0.0         255.255.255.255 UH    0      0        0 eth0
-172.31.0.0      0.0.0.0         255.255.240.0   U     0      0        0 eth0
+$ cd ..
+$ pwd
+/c/Workspace
+
+$ cd /
+$ pwd
+/
+
+$ cd C/Workspace/Linux
+$ pwd
+/C/Workspace/Linux
 ```
-> Destination : 목적지  
-> Gateway : 외부 네트워크와 연결하기 위한 Gateway 의 주소  
-> Genmask : 목적지 네트워크의 Genmask 주소  
-> Flags : 해당 경로에 대한 정보   
-> U : 경로가 살아있음, H : 목적지가 호스트 주소, G : 게이트웨이를 향하는 경로  
-> Metric : 목적지 경로까지의 거리  
 
-> route add : 라우트 설정에 대한 정보 추가 <=> route del
-
-## 리눅스 기초 명령어 - 검색/탐색 관련 명령어 -
-
-### find
-> 지정한 파일명 또는 정규표현식을 이용하여 파일을 검색  
-> find 옵션 찾기시작할패스 익스프레션  
-> ? : 하나의 문자에 대응, * : 0개 이상의 문자에 대응  
-> name, type f/d, perm, empty : 익스프레션에 쓸 수 있음  
-> find 패스 -name 파일명(필요시 정규표현식)
+## ls (List)
+>  현 디렉토리의 목록을 확인 일반적으로 ls -al사용
+>>-a .을 포함한 모든 파일과 디렉토리를 표시,   
+>>-l 지정한 디렉토리 내용을 자세히 표시
 ```bash
-$ find ./ -name testfile.txt
-./vagrant/testfile.txt
-./Work/testfile.txt
-
-$ touch testfile.t1t
-$ find ./ -name testfile.t?t
-./testfile.t1t
-
-$ find ./ -name t?stf?le.tx?
-./vagrant/testfile.txt
-./Work/testfile.txt
-
-$ find ./ -name testfile.*
-./vagrant/testfile.txt
-./Work/testfile.txt
+$ ls -al
+total 8
+drwxr-xr-x 1 thlee 197609 0  7월  6 23:16 ./
+drwxr-xr-x 1 thlee 197609 0  7월  6 23:24 ../
+drwxr-xr-x 1 thlee 197609 0  7월  6 22:29 Linux/
 ```
-### which
-> 환경변수 PATH에 등록된 디렉토리에 있는 명령어를 찾아주는 도구
+>ls -1 : 파일명을 List 형식으로 출력  
+>ls-h : 용량을 표시  
+>ls -alt : 시간순 정렬  
+>ls -altr : 시간 역순 정렬  
+
+## df (Disk Free)
+> 마운트된 모든 장치에 대한 현재의 디스크   
+공간 통계를 출력  
 ```bash
-$ echo ${PATH}
-/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin
-$ ^C
-$ which ls
-alias ls='ls --color=auto'
-        /usr/bin/ls
-$ which df
-/usr/bin/df
-$ which find
-/usr/bin/find
+$ df
+Filesystem           1K-blocks      Used Available Use% Mounted on
+C:/Program Files/Git 486413104 239931368 246481736  50% /
+D:                      592892     14824    578068   3% /d
 ```
-
-### grep (Global / Regular Expression / Print)
-> 텍스트 검색 기능을 가진 도구  
-> 파일이나 표준 입력을 검색하여 지정한 정규 표현식과 맞는 줄을 출력  
-> grep 옵션 "찾을문자열" 파일명    
-> grep -ir 찾을단어 파일(또는패스)
-
-> error, Error, eRRoR, erroR : 모두 다른 문자로 인식  
-> grep -ir "error" /var/log/*  
-> i : 대소문자를 구분하지 않음   
-> r : 하위 디렉토리를 포함하여 검색  
-
-### history
-> 명령어를 수행한 목록을 출력/조작  
-> .bash_history 에 저장
+> df -h (human readerble)
 ```bash
-$ history
-  316  which find
-  317  ls -al /var/log/messages
-  318  grep "error" /var/log/messages
-  319  grep error /var/log/*
-  320  ls -al .bash_history
-  321  tail .bash_history
+$ df -h
+Filesystem            Size  Used Avail Use% Mounted on
+C:/Program Files/Git  464G  229G  236G  50% /
+D:                    579M   15M  565M   3% /d
 ```
+> df -T (Type)를 통해 디스크 타입 확인 가능
+```bash
+$ df -T
+Filesystem           Type 1K-blocks      Used Available Use% Mounted on
+C:/Program Files/Git ntfs 486413104 239932092 246481012  50% /
+D:                   ntfs    592892     14824    578068   3% /d
+```
+> df -i (inodes) 를 통해 inodes의 사용, 잔여 등을 확인 가능
+```bash
+$ df -i
+$ df -i
+Filesystem           Inodes IUsed IFree IUse% Mounted on
+C:/Program Files/Git      -     -     -     - /
+D:                        -     -     -     - /d
+```
+
